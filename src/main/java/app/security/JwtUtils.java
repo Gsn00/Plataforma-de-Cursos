@@ -1,7 +1,6 @@
 package app.security;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -27,8 +26,8 @@ public class JwtUtils {
 		return JWT.create()
 				.withSubject(username)
 				.withIssuer(appName)
-				.withIssuedAt(LocalDateTime.now().toInstant(ZoneOffset.UTC))
-				.withExpiresAt(LocalDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant(ZoneOffset.UTC))
+				.withIssuedAt(ZonedDateTime.now().toInstant())
+				.withExpiresAt(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant())
 				.sign(algorithm);
 	}
 	

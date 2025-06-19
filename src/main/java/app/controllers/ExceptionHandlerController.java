@@ -6,9 +6,16 @@ import java.util.Map;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.auth0.jwt.exceptions.TokenExpiredException;
+
+import app.exceptions.InvalidRefreshTokenException;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -19,6 +26,51 @@ public class ExceptionHandlerController {
         Map<String, String> error = new HashMap<>();
         error.put("error", "Resource already exists");
         error.put("message", ex.getRootCause().getMessage());
+        return error;
+    }
+	
+	@ExceptionHandler(InvalidRefreshTokenException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public Map<String, String> handleInvalidRefreshToken(InvalidRefreshTokenException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Not allowed");
+        error.put("message", ex.getMessage());
+        return error;
+    }
+	
+	@ExceptionHandler(TokenExpiredException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public Map<String, String> handleTokenExpired(TokenExpiredException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Not allowed");
+        error.put("message", ex.getMessage());
+        return error;
+    }
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleInvalidEnum(HttpMessageNotReadableException ex) {
+		Map<String, String> error = new HashMap<>();
+        error.put("error", "Bad request");
+        error.put("message", ex.getMessage());
+        return error;
+    }
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public Map<String, String> handleAccessDenied(AccessDeniedException ex) {
+		Map<String, String> error = new HashMap<>();
+        error.put("error", "Access denied");
+        error.put("message", ex.getMessage());
+        return error;
+    }
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public Map<String, String> handleBadCredentials(BadCredentialsException ex) {
+		Map<String, String> error = new HashMap<>();
+        error.put("error", "Access denied");
+        error.put("message", ex.getMessage());
         return error;
     }
 }

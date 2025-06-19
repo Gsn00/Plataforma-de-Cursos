@@ -2,17 +2,11 @@ package app.domain.enums;
 
 public enum RoleType {
 	
-	STUDENT("student"),
-	TEACHER("teacher"),
-	ADMIN("admin");
+	STUDENT,
+	TEACHER,
+	ADMIN;
 	
-	private String role;
-	
-	RoleType(String role) {
-		this.role = role;
-	}
-	
-	String getRole() {
-		return role.toString();
+	public static RoleType fromString(String value) {
+		return RoleType.valueOf(value.toUpperCase());
 	}
 }
