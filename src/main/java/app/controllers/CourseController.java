@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import app.domain.Course;
+import app.domain.dto.CourseDTO;
 import app.services.CourseService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/courses")
@@ -38,16 +40,16 @@ public class CourseController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Course> create(@RequestBody Course obj) {
-		obj = courseService.create(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<Course> create(@RequestBody @Valid CourseDTO obj) {
+		Course course = courseService.create(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
+		return ResponseEntity.created(uri).body(course);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Course> update(@RequestBody Course obj, @PathVariable Long id) {
-		obj = courseService.update(obj, id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<Course> update(@RequestBody @Valid CourseDTO obj, @PathVariable Long id) {
+		Course course = courseService.update(obj, id);
+		return ResponseEntity.ok(course);
 	}
 	
 	@DeleteMapping("/{id}")
