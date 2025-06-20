@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import app.domain.Course;
 import app.domain.dto.CourseDTO;
+import app.domain.dto.CourseResponse;
 import app.services.CourseService;
 import jakarta.validation.Valid;
 
@@ -28,27 +28,27 @@ public class CourseController {
 	private CourseService courseService;
 	
 	@GetMapping
-	public ResponseEntity<List<Course>> findAll() {
-		List<Course> list = courseService.findAll();
+	public ResponseEntity<List<CourseResponse>> findAll() {
+		List<CourseResponse> list = courseService.findAll();
 		return ResponseEntity.ok(list);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Course> findById(@PathVariable Long id) {
-		Course course = courseService.findById(id);
+	public ResponseEntity<CourseResponse> findById(@PathVariable Long id) {
+		CourseResponse course = courseService.findById(id);
 		return ResponseEntity.ok(course);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Course> create(@RequestBody @Valid CourseDTO obj) {
-		Course course = courseService.create(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.getId()).toUri();
+	public ResponseEntity<CourseResponse> create(@RequestBody @Valid CourseDTO obj) {
+		CourseResponse course = courseService.create(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(course.id()).toUri();
 		return ResponseEntity.created(uri).body(course);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Course> update(@RequestBody @Valid CourseDTO obj, @PathVariable Long id) {
-		Course course = courseService.update(obj, id);
+	public ResponseEntity<CourseResponse> update(@RequestBody @Valid CourseDTO obj, @PathVariable Long id) {
+		CourseResponse course = courseService.update(obj, id);
 		return ResponseEntity.ok(course);
 	}
 	

@@ -37,6 +37,7 @@ public class UserService {
 	}
 
 	public void update(User obj, Long id) {
+		//O usuário pode apenas atualizar a si mesmo, a menos que seja admin
 		User user = authenticatedUser.getAuthenticatedUser();
 		
 		if (!user.getRole().equals(RoleType.ADMIN) && user.getId() != id)
@@ -57,6 +58,7 @@ public class UserService {
 	}
 
 	public void delete(Long id) {
+		//O usuário pode apenas deletar a si mesmo, a menos que seja admin
 		User user = authenticatedUser.getAuthenticatedUser();
 		
 		if (!user.getRole().equals(RoleType.ADMIN) && !user.getId().equals(id))
