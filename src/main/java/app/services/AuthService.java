@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,9 +23,12 @@ import app.domain.dto.LoginDTO;
 import app.domain.dto.LoginResponse;
 import app.domain.dto.RefreshDTO;
 import app.domain.dto.RefreshResponse;
+import app.domain.dto.RegisterDTO;
+import app.domain.enums.RoleType;
 import app.exceptions.InvalidRefreshTokenException;
 import app.repositories.RefreshTokenRepository;
 import app.repositories.UserRepository;
+import app.security.AuthenticatedUser;
 import app.security.JwtUtils;
 
 @Service
@@ -45,13 +49,22 @@ public class AuthService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private AuthenticatedUser authenticatedUser;
+	
 	@Value("${jwt.refresh.expiration.days}")
 	private Integer jwtRefreshExpirationDays;
 	
-	public void register(User register) {
-		register.setPassword(passwordEncoder.encode(register.getPassword()));
-		register.setRole(register.getRole());
-		userRepository.save(register);
+	public void register(RegisterDTO register) {
+		if (register.role().equals(RoleType.ADMIN)) {
+			User authUser = authenticatedUser.getAuthenticatedUser();
+			if (!authUser.getRole().equals(RoleType.ADMIN))
+				throw new AccessDeniedException("Only admins can create other admins.");
+		}
+		
+		User user = new User
+				(null, register.name(), register.email(), passwordEncoder.encode(register.password()), register.role());
+		userRepository.save(user);
 	}
 
 	public RefreshResponse refresh(RefreshDTO refreshDto) {

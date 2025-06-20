@@ -17,7 +17,7 @@ public class AuthenticatedUser {
 			return (User) authentication.getPrincipal();
 		}
 		
-		throw new UsernameNotFoundException("User not found.");
+		throw new UsernameNotFoundException("There is no user authenticated.");
 	}
 	
 }
