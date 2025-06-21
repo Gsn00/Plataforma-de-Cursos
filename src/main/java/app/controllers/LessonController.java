@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import app.domain.Lesson;
+import app.domain.dto.LessonDTO;
+import app.domain.dto.LessonResponse;
 import app.services.LessonService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/lessons")
@@ -25,29 +27,29 @@ public class LessonController {
 	@Autowired
 	private LessonService lessonService;
 	
-	@GetMapping
-	public ResponseEntity<List<Lesson>> findAll() {
-		List<Lesson> list = lessonService.findAll();
+	@GetMapping("/course/{id}")
+	public ResponseEntity<List<LessonResponse>> findAllByCourseId(@PathVariable Long id) {
+		List<LessonResponse> list = lessonService.findAllByCourseId(id);
 		return ResponseEntity.ok(list);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Lesson> findById(@PathVariable Long id) {
-		Lesson lesson = lessonService.findById(id);
+	public ResponseEntity<LessonResponse> findById(@PathVariable Long id) {
+		LessonResponse lesson = lessonService.findById(id);
 		return ResponseEntity.ok(lesson);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Lesson> create(@RequestBody Lesson obj) {
-		obj = lessonService.create(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<LessonResponse> create(@RequestBody @Valid LessonDTO obj) {
+		LessonResponse response = lessonService.create(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
+		return ResponseEntity.created(uri).body(response);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Lesson> update(@RequestBody Lesson obj, @PathVariable Long id) {
-		obj = lessonService.update(obj, id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<LessonResponse> update(@RequestBody @Valid LessonDTO obj, @PathVariable Long id) {
+		LessonResponse response  = lessonService.update(obj, id);
+		return ResponseEntity.ok(response);
 	}
 	
 	@DeleteMapping("/{id}")

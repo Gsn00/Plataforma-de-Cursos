@@ -33,8 +33,13 @@ public class CourseService {
 		return courseMapper.toDTO(courses);
 	}
 
+	public Course findByIdEntity(Long id) {
+		Course course = courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Course not found."));		
+		return course;
+	}
+	
 	public CourseResponse findById(Long id) {
-		Course course = courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());		
+		Course course = this.findByIdEntity(id);		
 		return courseMapper.toDTO(course);
 	}
 
@@ -54,7 +59,7 @@ public class CourseService {
 	public CourseResponse update(CourseDTO obj, Long id) {
 		//Verificar se quem está atualizando é o professor ou admin
 		User user = authenticatedUser.getAuthenticatedUser();
-		Course existingCourse = courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+		Course existingCourse = this.findByIdEntity(id);
 		
 		if (user.getRole().equals(RoleType.STUDENT))
 			throw new AccessDeniedException("You have no permission to access this endpoint.");
@@ -72,7 +77,7 @@ public class CourseService {
 	public void delete(Long id) {
 		//Verificar se quem está deletando é o professor ou admin
 		User user = authenticatedUser.getAuthenticatedUser();
-		Course existingCourse = courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+		Course existingCourse = this.findByIdEntity(id);
 		
 		if (user.getRole().equals(RoleType.STUDENT))
 			throw new AccessDeniedException("You have no permission to access this endpoint.");

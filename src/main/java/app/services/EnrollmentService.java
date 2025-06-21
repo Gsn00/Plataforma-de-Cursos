@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import app.domain.Enrollment;
 import app.exceptions.ResourceNotFoundException;
 import app.repositories.EnrollmentRepository;
@@ -19,7 +20,7 @@ public class EnrollmentService {
 	}
 
 	public Enrollment findById(Long id) {
-		return enrollmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException());
+		return enrollmentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Enrollment not found."));
 	}
 
 	public Enrollment create(Enrollment obj) {
@@ -32,5 +33,7 @@ public class EnrollmentService {
 		enrollmentRepository.deleteById(id);
 	}
 	
-	
+	public boolean isUserEnrolled(Long userId, Long courseId) {
+		return enrollmentRepository.existsByUserIdAndCourseId(userId, courseId);
+	}
 }

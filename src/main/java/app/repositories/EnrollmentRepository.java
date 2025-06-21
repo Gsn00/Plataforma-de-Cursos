@@ -13,9 +13,11 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 	
 	@Modifying
 	@Transactional
-	void deleteAllByCourseId(Long userId);
+	void deleteAllByCourseId(Long courseId);
 	
 	@Modifying
 	@Transactional
 	void deleteAllByCourseTeacherId(Long userId);
+	
+	boolean existsByUserIdAndCourseId(Long userId, Long courseId);
 }
