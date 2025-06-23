@@ -7,9 +7,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.domain.User;
+import app.domain.dto.UserResponse;
 import app.domain.enums.RoleType;
 import app.domain.lifecycle.CascadeDeletionManager;
 import app.exceptions.ResourceNotFoundException;
+import app.mappers.UserMapper;
 import app.repositories.UserRepository;
 import app.security.AuthenticatedUser;
 
@@ -27,14 +29,28 @@ public class UserService {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserMapper userMapper;
 
-	public List<User> findAll() {
+	public List<UserResponse> findAll() {
 		//Apenas admins
-		return userRepository.findAll();
+		User user = authenticatedUser.getAuthenticatedUser();
+		if (!user.getRole().equals(RoleType.ADMIN))
+			throw new AccessDeniedException("You have no permission to access this endpoint.");
+		
+		List<User> users = userRepository.findAll();
+		
+		return userMapper.toDTO(users);
 	}
 
-	public User findById(Long id) {
+	public User findByIdEntity(Long id) {
 		return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found."));
+	}
+	
+	public UserResponse findById(Long id) {
+		User user = this.findByIdEntity(id);
+		return userMapper.toDTO(user);
 	}
 
 	public void update(User obj, Long id) {
@@ -44,7 +60,7 @@ public class UserService {
 		if (!user.getRole().equals(RoleType.ADMIN) && user.getId() != id)
 			throw new AccessDeniedException("You have no permission to access this endpoint.");
 		
-		User existingUser = this.findById(id);
+		User existingUser = this.findByIdEntity(id);
 		
 		if (obj.getName() != null && !obj.getName().isBlank())
 			existingUser.setName(obj.getName());

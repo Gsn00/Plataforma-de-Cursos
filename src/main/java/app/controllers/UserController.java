@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.domain.User;
+import app.domain.dto.UserResponse;
 import app.services.UserService;
 
 @RestController
@@ -23,14 +24,14 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll() {
-		List<User> list = userService.findAll();
+	public ResponseEntity<List<UserResponse>> findAll() {
+		List<UserResponse> list = userService.findAll();
 		return ResponseEntity.ok(list);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
-		User user = userService.findById(id);
+	public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
+		UserResponse user = userService.findById(id);
 		return ResponseEntity.ok(user);
 	}
 	
