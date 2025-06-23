@@ -29,6 +29,7 @@ public class UserService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<User> findAll() {
+		//Apenas admins
 		return userRepository.findAll();
 	}
 

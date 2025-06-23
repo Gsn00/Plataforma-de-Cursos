@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import app.domain.Enrollment;
+import app.domain.dto.EnrollmentDTO;
+import app.domain.dto.EnrollmentResponse;
 import app.services.EnrollmentService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/enrollments")
@@ -24,23 +26,29 @@ public class EnrollmentController {
 	@Autowired
 	private EnrollmentService enrollmentService;
 	
-	@GetMapping
-	public ResponseEntity<List<Enrollment>> findAll() {
-		List<Enrollment> list = enrollmentService.findAll();
+	@GetMapping("/course/{id}")
+	public ResponseEntity<List<EnrollmentResponse>> findAllByCourseId(@PathVariable Long id) {
+		List<EnrollmentResponse> list = enrollmentService.findAllByCourseId(id);
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<List<EnrollmentResponse>> findAllByUserId(@PathVariable Long id) {
+		List<EnrollmentResponse> list = enrollmentService.findAllByUserId(id);
 		return ResponseEntity.ok(list);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Enrollment> findById(@PathVariable Long id) {
-		Enrollment enrollment = enrollmentService.findById(id);
+	public ResponseEntity<EnrollmentResponse> findById(@PathVariable Long id) {
+		EnrollmentResponse enrollment = enrollmentService.findById(id);
 		return ResponseEntity.ok(enrollment);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Enrollment> create(@RequestBody Enrollment obj) {
-		obj = enrollmentService.create(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<EnrollmentResponse> create(@RequestBody @Valid EnrollmentDTO obj) {
+		EnrollmentResponse enrollment = enrollmentService.create(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(enrollment.id()).toUri();
+		return ResponseEntity.created(uri).body(enrollment);
 	}
 	
 	@DeleteMapping("/{id}")

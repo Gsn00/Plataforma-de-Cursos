@@ -23,15 +23,8 @@ public class CourseMapper {
 	}
 	
 	public List<CourseResponse> toDTO(List<Course> list) {
-			List<CourseResponse> coursesResponse = list.stream().map(course -> {
-			
-			UserResponse userResponse = new UserResponse
-					(course.getTeacher().getId(), course.getTeacher().getName(), course.getTeacher().getEmail());
-			
-			CourseResponse courseResponse = new CourseResponse
-					(course.getId(), course.getTitle(), course.getDescription(), userResponse, course.getCreationDate());
-			return courseResponse;
-			
+		List<CourseResponse> coursesResponse = list.stream().map(course -> {
+			return this.toDTO(course);
 		}).collect(Collectors.toList());
 		
 		return coursesResponse;

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import app.exceptions.InvalidRefreshTokenException;
+import app.exceptions.ResourceNotFoundException;
+import app.exceptions.UserAlreadyEnrolledException;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -81,6 +83,24 @@ public class ExceptionHandlerController {
 		Map<String, String> error = new HashMap<>();
         error.put("error", "Method Argument Not Valid");
         ex.getBindingResult().getFieldErrors().forEach(field -> error.put(field.getField(), field.getDefaultMessage()));
+        return error;
+    }
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleResourceNotFound(ResourceNotFoundException ex) {
+		Map<String, String> error = new HashMap<>();
+        error.put("error", "Resource Not Found");
+        error.put("message", ex.getMessage());
+        return error;
+    }
+	
+	@ExceptionHandler(UserAlreadyEnrolledException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleUserAlreadyEnrolled(UserAlreadyEnrolledException ex) {
+		Map<String, String> error = new HashMap<>();
+        error.put("error", "User Already Enrolled");
+        error.put("message", ex.getMessage());
         return error;
     }
 }
