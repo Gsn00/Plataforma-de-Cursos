@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import app.domain.dto.LessonDTO;
@@ -39,9 +42,9 @@ public class LessonController {
 		return ResponseEntity.ok(lesson);
 	}
 	
-	@PostMapping
-	public ResponseEntity<LessonResponse> create(@RequestBody @Valid LessonDTO obj) {
-		LessonResponse response = lessonService.create(obj);
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<LessonResponse> create(@RequestPart("data") @Valid LessonDTO obj, @RequestPart("file") MultipartFile videoFile) {
+		LessonResponse response = lessonService.create(obj, videoFile);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(response.id()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}

@@ -103,4 +103,13 @@ public class ExceptionHandlerController {
         error.put("message", ex.getMessage());
         return error;
     }
+	
+	@ExceptionHandler(RuntimeException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleRuntimeException(RuntimeException ex) {
+		Map<String, String> error = new HashMap<>();
+        error.put("error", "Runtime Exception");
+        error.put("message", ex.getMessage());
+        return error;
+    }
 }

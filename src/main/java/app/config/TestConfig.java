@@ -36,8 +36,8 @@ public class TestConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		User u1 = new User(null, "John Doe", "john@gmail.com", new BCryptPasswordEncoder().encode("john123"), RoleType.STUDENT);
-		User u2 = new User(null, "Daryl Dixon", "daryl@gmail.com", new BCryptPasswordEncoder().encode("arrows"), RoleType.TEACHER);
-		User u3 = new User(null, "Ana Del Armas", "ana@gmail.com", new BCryptPasswordEncoder().encode("armas55"), RoleType.ADMIN);
+		User u2 = new User(null, "Daryl Gray", "daryl@gmail.com", new BCryptPasswordEncoder().encode("arrows"), RoleType.TEACHER);
+		User u3 = new User(null, "Ana Brown", "ana@gmail.com", new BCryptPasswordEncoder().encode("armas55"), RoleType.ADMIN);
 		
 		userRepository.saveAll(Arrays.asList(u1, u2, u3));
 		

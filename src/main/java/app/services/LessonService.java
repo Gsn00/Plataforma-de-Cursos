@@ -1,9 +1,12 @@
 package app.services;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import app.domain.Course;
 import app.domain.Lesson;
@@ -13,9 +16,11 @@ import app.domain.dto.LessonDTO;
 import app.domain.dto.LessonResponse;
 import app.domain.enums.RoleType;
 import app.exceptions.ResourceNotFoundException;
+import app.mappers.CourseMapper;
 import app.mappers.LessonMapper;
 import app.repositories.LessonRepository;
 import app.security.AuthenticatedUser;
+import app.streaming.GumletClient;
 
 @Service
 public class LessonService {
@@ -34,6 +39,12 @@ public class LessonService {
 	
 	@Autowired
 	private CourseService courseService;
+	
+	@Autowired
+	private GumletClient gumletClient;
+	
+	@Autowired
+	private CourseMapper courseMapper;
 
 	public List<LessonResponse> findAllByCourseId(Long id) {
 		//Apenas o próprio professor, alunos matriculados e admin poderão ter acesso.
@@ -70,18 +81,21 @@ public class LessonService {
 		return lessonMapper.toDTO(lesson);
 	}
 
-	public LessonResponse create(LessonDTO obj) {
+	public LessonResponse create(LessonDTO obj, MultipartFile videoFile) {
 		//Apenas admins e o próprio professor podem criar uma nova aula.
 		User user = authenticatedUser.getAuthenticatedUser();
 		Course course = courseService.findByIdEntity(obj.courseId());
-		CourseResponse courseResponse = courseService.findById(obj.courseId());
+		CourseResponse courseResponse = courseMapper.toDTO(course);
 		
 		boolean isUserTheTeacher = (course.getTeacher().getId().equals(user.getId()));
 		
 		if (!user.getRole().equals(RoleType.ADMIN) && !isUserTheTeacher)
 			throw new AccessDeniedException("You can't create lessons for this course.");
 		
-		Lesson lesson = new Lesson(null, obj.title(), obj.description(), course, obj.sequence(), obj.videoUrl());	
+		Map<String, String> assets = gumletClient.requestUploadInfo(obj.title(), obj.description());
+		gumletClient.uploadVideoToGumlet(assets.get("asset_id"), videoFile);
+		
+		Lesson lesson = new Lesson(null, obj.title(), obj.description(), course, obj.sequence(), assets.get("playback_url"));	
 		lesson = lessonRepository.save(lesson);
 		
 		return new LessonResponse
@@ -103,7 +117,6 @@ public class LessonService {
 		existingLesson.setTitle(obj.title());
 		existingLesson.setDescription(obj.description());
 		existingLesson.setSequence(obj.sequence());
-		existingLesson.setVideoUrl(obj.videoUrl());
 		
 		Lesson lesson = lessonRepository.save(existingLesson);
 		
