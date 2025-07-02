@@ -77,14 +77,15 @@ public class UserService {
 	public void delete(Long id) {
 		//O usuário pode apenas deletar a si mesmo, a menos que seja admin
 		User user = authenticatedUser.getAuthenticatedUser();
+		User userToBeDeleted = this.findByIdEntity(id);
 		
 		if (!user.getRole().equals(RoleType.ADMIN) && !user.getId().equals(id))
 			throw new AccessDeniedException("You have no permission to access this endpoint.");
 		
-		if (user.getRole().equals(RoleType.STUDENT)) {
-			cascadeDeletionManager.deleteStudentAndDependenciesByUserId(id);
-		} else {
-			cascadeDeletionManager.deleteTeacherAndDependenciesByUserId(id);
+		switch (userToBeDeleted.getRole()) {
+			case STUDENT -> cascadeDeletionManager.deleteStudentAndDependenciesByUserId(id);
+			case TEACHER -> cascadeDeletionManager.deleteTeacherAndDependenciesByUserId(id);
+			default -> cascadeDeletionManager.deleteTeacherAndDependenciesByUserId(id);
 		}
 	}
 }

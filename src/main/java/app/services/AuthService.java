@@ -53,7 +53,7 @@ public class AuthService {
 	private AuthenticatedUser authenticatedUser;
 	
 	@Value("${jwt.refresh.expiration.days}")
-	private Integer jwtRefreshExpirationDays;
+	public Integer jwtRefreshExpirationDays;
 	
 	public void register(RegisterDTO register) {
 		if (register.role().equals(RoleType.ADMIN)) {
