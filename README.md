@@ -18,6 +18,7 @@ Este projeto implementa o backend de uma plataforma de cursos online, desenvolvi
 - **Gumlet API**: Serviço para upload de vídeos.
 - **OkHttp**: Cliente HTTP usado para consumo da API da Gumlet.
 - **JUnit & Mockito**: Frameworks para testes unitários e mocks.
+- **Swagger UI**: Documentação interativa.
 - **Postman**: Testes manuais dos endpoints durante o desenvolvimento.
 
 ## 🔐 Funcionalidades
@@ -55,24 +56,43 @@ src
 ## 🚀 Como Executar
 
 1. Clone o repositório:
-
    ```bash
    git clone https://github.com/Gsn00/Plataforma-de-Cursos.git
    ```
-
 2. Navegue até o diretório do projeto:
-   
    ```
    cd Plataforma-de-Cursos
    ```
 3. Compile e execute a aplicação:
-
    ```
    ./mvnw spring-boot:run
    ```
-
 4. Acesse a aplicação em http://localhost:8080.
 
-   
+## 🧪 Testando a API com Swagger
 
+O projeto já inclui documentação interativa gerada com **Swagger UI**, que facilita os testes dos endpoints diretamente pelo navegador.
+
+### Como acessar o Swagger:
+
+1. Inicie a aplicação:
+   ```bash
+   ./mvnw spring-boot:run
+    ```
+2. Acesse a URL do Swagger no navegador:
+   ```
+   http://localhost:8080/swagger-ui/index.html
+   ```
+3. Navegue pelas rotas disponíveis e faça testes de requisições (GET, POST, PUT, DELETE).
+4. Para rotas protegidas, use o botão **Authorize** para inserir o token JWT após realizar o login.
+
+## 👥 Contas pré-configuradas para testes
+Ao iniciar a aplicação, três usuários são criados automaticamente no banco de dados para facilitar o teste das funcionalidades:
+| Nome       | Email                                     | Senha    | Papel (Role) |
+| ---------- | ----------------------------------------- | -------- | ------------ |
+| John Doe   | [john@gmail.com](mailto:john@gmail.com)   | john123  | STUDENT      |
+| Daryl Gray | [daryl@gmail.com](mailto:daryl@gmail.com) | daryl123 | TEACHER      |
+| Ana Brown  | [ana@gmail.com](mailto:ana@gmail.com)     | ana123   | ADMIN        |
+
+Você pode fazer login com esses dados para gerar um token JWT e testar as permissões específicas de cada papel.
    
