@@ -1,5 +1,6 @@
-# Plataforma de Cursos Online
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Gsn00/plataforma-de-cursos/blob/main/LICENSE)
+
+# Plataforma de Cursos Online
 
 ## 🎯 Visão Geral
 
