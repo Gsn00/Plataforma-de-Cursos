@@ -12,7 +12,9 @@ Este projeto implementa o backend de uma plataforma de cursos online, desenvolvi
 - **Spring Security**: Implementação de autenticação e autorização com JWT e refresh tokens.
 - **PostgreSQL**: Banco de dados relacional.
 - **Gumlet API**: Serviço para upload de vídeos.
+- **OkHttp**: Cliente HTTP usado para consumo da API da Gumlet.
 - **JUnit & Mockito**: Frameworks para testes unitários e mocks.
+- **Postman**: Testes manuais dos endpoints durante o desenvolvimento.
 
 ## 🔐 Funcionalidades
 
@@ -22,6 +24,29 @@ Este projeto implementa o backend de uma plataforma de cursos online, desenvolvi
 - **Gerenciamento de Dados**: Criação de DTOs e Responses para estruturação de dados.
 - **Testes Automatizados**: Cobertura de testes na camada de serviço utilizando JUnit e Mockito.
 - **Gerenciamento de Exclusões em Cascata**: Implementação de lógica personalizada para exclusão de cursos, aulas e matrículas.
+
+## 🗂 Estrutura do Projeto
+
+```text
+src
+└── main
+    ├── java
+    │   ├── app.config           # Configurações gerais
+    │   ├── app.controllers      # Endpoints REST (AuthController, CourseController, etc.)
+    │   ├── app.domain           # Entidades JPA (Course, User, etc.)
+    │   ├── app.domain.dto       # DTOs para requisição e resposta
+    │   ├── app.domain.enums     # Enums (ex: RoleType)
+    │   ├── app.domain.lifecycle # Eventos de ciclo de vida JPA (ex: CascadeDeletionManager)
+    │   ├── app.exceptions       # Tratamento de erros personalizados
+    │   ├── app.mappers          # Conversão DTO ↔ Entity
+    │   ├── app.repositories     # Interfaces do Spring Data JPA
+    │   ├── app.security         # JWT, filtros de autenticação e autorização
+    │   ├── app.services         # Regras de negócio
+    │   └── app.streaming        # Integração com API da Gumlet (HTTP client via OkHttp)
+└── test
+    └── java
+        └── app.services         # Testes unitários com JUnit e Mockito
+```
 
 ## 🚀 Como Executar
 
