@@ -29,3 +29,21 @@ Este projeto implementa o backend de uma plataforma de cursos online, desenvolvi
 
    ```bash
    git clone https://github.com/Gsn00/Plataforma-de-Cursos.git
+   ```
+
+2. Navegue até o diretório do projeto:
+   
+   ```
+   cd Plataforma-de-Cursos
+   ```
+3. Compile e execute a aplicação:
+
+   ```
+   ./mvnw spring-boot:run
+   ```
+
+4. Acesse a aplicação em http://localhost:8080.
+
+   
+
+   
