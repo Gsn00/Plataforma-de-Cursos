@@ -15,10 +15,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import app.security.JwtAuthenticationFilter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @Configuration
 @EnableWebSecurity
+@SecurityScheme(name = SecurityConfig.SECURITY, type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SecurityConfig {
+	
+	public static final String SECURITY = "bearerAuth";
 	
 	@Autowired
 	private JwtAuthenticationFilter jwtFilter;
@@ -29,6 +34,7 @@ public class SecurityConfig {
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/auth/**").permitAll()
+					.requestMatchers("/v3/api-docs/**", "swagger-ui/**", "swagger-ui.html").permitAll()
 					.requestMatchers(HttpMethod.GET, "/users/findAll", "/users/findById").hasRole("ADMIN")
 					.requestMatchers(HttpMethod.POST, "/courses/**", "/lessons/**").hasAnyRole("TEACHER", "ADMIN")
 					.requestMatchers(HttpMethod.PUT, "/courses/**", "/lessons/**").hasAnyRole("TEACHER", "ADMIN")
