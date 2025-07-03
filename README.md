@@ -53,7 +53,7 @@ src
         └── app.services         # Testes unitários com JUnit e Mockito
 ```
 
-## 🚀 Como Executar
+## 🚀 Como Baixar
 
 1. Clone o repositório:
    ```bash
@@ -63,11 +63,33 @@ src
    ```
    cd Plataforma-de-Cursos
    ```
-3. Compile e execute a aplicação:
+
+## 🛠️ Configuração da API do Gumlet
+
+Para que o upload de vídeos funcione corretamente, é necessário configurar uma API Key do Gumlet na aplicação.
+
+### Passo 1: Criar uma conta no Gumlet
+
+1. Acesse o [site oficial do Gumlet](https://www.gumlet.com/).
+2. Clique em **Sign Up** para criar uma nova conta ou **Login** se já tiver uma conta.
+
+### Passo 2: Gerar a API Key
+
+1. Após o login, no painel do Gumlet, vá para **User > API Keys**.
+2. Clique em **+ Generate API Key**.
+3. Preencha o nome e as permissões desejadas para a chave.
+4. Clique em **Create API Key**.
+5. Copie a chave gerada.
+
+### Passo 3: Configurar a API Key na aplicação
+
+1. No seu projeto local, abra o arquivo `src/main/resources/application.properties`.
+2. Adicione a seguinte linha, substituindo `SEU-GUMLET-API-KEY` pela chave copiada:
+   ```properties
+   gumlet.api.key=SEU-GUMLET-API-KEY
    ```
-   ./mvnw spring-boot:run
-   ```
-4. Acesse a aplicação em http://localhost:8080.
+
+   Com isso, a aplicação estará pronta para interagir com a API do Gumlet para upload de vídeos.
 
 ## 🧪 Testando a API com Swagger
 
