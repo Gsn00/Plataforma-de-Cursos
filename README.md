@@ -12,6 +12,8 @@ Este projeto implementa o backend de uma plataforma de cursos online, desenvolvi
 - **Spring Boot**: Framework para desenvolvimento de aplicações Java.
 - **Spring Data JPA**: ORM para interação com o banco de dados PostgreSQL.
 - **Spring Security**: Implementação de autenticação e autorização com JWT e refresh tokens.
+- **Lombok**: Redução de boilerplate.
+- **Bean Validation**: Validação de entrada de dados.
 - **PostgreSQL**: Banco de dados relacional.
 - **Gumlet API**: Serviço para upload de vídeos.
 - **OkHttp**: Cliente HTTP usado para consumo da API da Gumlet.
