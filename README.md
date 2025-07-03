@@ -4,7 +4,7 @@
 
 ## 🎯 Visão Geral
 
-Este projeto implementa o backend de uma plataforma de cursos online, desenvolvido com Java, Spring Boot e PostgreSQL. O objetivo é proporcionar uma experiência de aprendizado segura e eficiente, com funcionalidades robustas para diferentes perfis de usuários.
+Este projeto foi criado como um exercício prático e estudos focados em backend, utilizando Java, Spring Boot e PostgreSQL. O principal objetivo foi aprofundar meus conhecimentos técnicos, experimentar boas práticas e aplicar conceitos como autenticação, segurança, upload de vídeos e testes automatizados. Embora se trate de uma aplicação funcional para gestão de cursos online, seu propósito central foi o aprendizado e aprimoramento profissional.
 
 ## ⚙️ Tecnologias Utilizadas
 
